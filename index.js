@@ -6,6 +6,10 @@ const bodyParser = require('body-parser');
 const getProductDetails = require('./Backend/src/routes/getProductDetails');
 const postProduct = require("./Backend/src/routes/postProduct");
 const app = express();
+const redis = require("redis");
+
+const redisPort = 6379;
+const client = redis.createClient(redisPort);
 
 mongoose.connect(mongoDB, (err) => {
     if (err) {
@@ -55,15 +59,44 @@ app.get('/product/:product_id', (req, res) => {
 
 app.get('/products/all', (req, res) => {
 
-    Products.find()
-    .then(result => {
+    const searchTerm = "al";
 
-        res.status(200).send(result);
+    try{
+    client.get(searchTerm, async (err, result) => {
+
+        if(err) throw err;
+
+        if(result){
+            console.log("data retrieved from the cache");
+            res.status(200).send({
+                result : JSON.parse(result),
+                message: "data retrieved from the cache"
+            })
+        }
+        else{
+            
+            Products.find()
+            .then(result => {
+                client.setex(searchTerm, 600, JSON.stringify(result));
+                console.log("data retrieved from database since cache did not had it");
+                res.status(200).send({
+                    result: JSON.parse(result),
+                    message: "cache miss"
+                });
+            })
+            .catch(err => {
+                console.log("ERROR retrieving data from database (since cache did not had it)");
+                res.status(500).send(err);
+            })
+        }
     })
-    .catch(err => {
-        res.status(500).send(err);
-    })
+    }
+    catch(err) {
+        //console.log("try catch block err")
+        res.status(500).send({message: "client.get error"});
+    }
 });
+
 
 app.post('/add/product', (req, res) => {
 
