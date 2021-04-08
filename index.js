@@ -9,7 +9,10 @@ const app = express();
 const redis = require("redis");
 
 const redisPort = 6379;
-const client = redis.createClient(redisPort);
+const client = redis.createClient({
+    host: 'redis-non-cluster.iywc22.0001.usw2.cache.amazonaws.com',
+    port: 6379
+});
 
 mongoose.connect(mongoDB, (err) => {
     if (err) {
@@ -97,7 +100,6 @@ app.get('/products/all', (req, res) => {
     }
 });
 
-
 app.post('/add/product', (req, res) => {
 
     var newProduct = new Products ({
@@ -117,7 +119,7 @@ app.post('/add/product', (req, res) => {
     })
 });
 
-
+ 
 app.listen(3000, function(res, req){
 
     console.log("server is running at port 3000");
