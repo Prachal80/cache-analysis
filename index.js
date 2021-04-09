@@ -127,16 +127,18 @@ app.post('/add/product', (req, res) => {
     })
 });
 
+//test code main
 app.get('/test',(req,res)=>{
 
-    memcached.get('user',async(err,result)=>{
+    // method to get saved data....
+    memcached.get('user', function (err, result) {
+        if(result != null){
+            res.status(200).send( JSON.parse( result ));
+        }
         if(err){
             res.status(500).send(err);
         }
-        res.status(200).send({
-            result:result,
         });
-    });
 });
 
 app.listen(3000, function(res, req){
