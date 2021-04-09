@@ -127,6 +127,17 @@ app.post('/add/product', (req, res) => {
     })
 });
 
+app.get('/test',(req,res)=>{
+
+    memcached.get('user',async(err,result)=>{
+        if(err){
+            res.status(500).send(err);
+        }
+        res.status(200).send({
+            result:result,
+        });
+    });
+});
 
 app.listen(3000, function(res, req){
 
