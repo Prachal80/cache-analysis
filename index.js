@@ -47,11 +47,12 @@ app.use(function(req, res, next) {
     res.setHeader("Cache-Control", "no-cache");
     next();
 });
-
+//Ping route
 app.get('/', function(res, req){
     req.status(200).send("Hello World!");
 });
 
+//Get Product by id
 app.get('/product/:_id', (req, res) => {
 
     getProductDetails(req.params._id)
@@ -64,6 +65,7 @@ app.get('/product/:_id', (req, res) => {
     })
 });
 
+//Get product by name
 app.get('/product/:product_name', (req, res) => {
 
     getProductDetails(req.params.product_name)
@@ -76,6 +78,7 @@ app.get('/product/:product_name', (req, res) => {
     })
 });
 
+//Get all products
 app.get('/products/all', (req, res) => {
 
     const searchTerm = 'all';
@@ -108,7 +111,7 @@ app.get('/products/all', (req, res) => {
 
 });
 
-
+//Other end point for static user creation
 app.post('add/user', (req,res) => {
 
     var user = {
