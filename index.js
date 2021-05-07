@@ -49,7 +49,7 @@ app.use(function(req, res, next) {
 });
 
 app.get('/', function(res, req){
-    res.send("Hello World!");
+    req.status(200).send("Hello World!");
 });
 
 app.get('/product/:_id', (req, res) => {
@@ -108,6 +108,25 @@ app.get('/products/all', (req, res) => {
 
 });
 
+
+app.post('add/user', (req,res) => {
+
+    var user = {
+        'userId':'iuytredcvb12345sdfgh',
+        'userName':'testUser',
+        'emailId':'demo.jsonworld@gmail.com',
+        'phone' : 8287374553,
+        'availableFor' : '2 hours',
+        'createdOn':1543122402
+        }
+
+        memcached.set('user', user, 10000, function (err) {
+            if(err) throw new err;
+            });
+       
+
+} )
+
 app.post('/add/product', (req, res) => {
 
     var newProduct = new Products ({
@@ -131,9 +150,11 @@ app.post('/add/product', (req, res) => {
 app.get('/test',(req,res)=>{
 
     // method to get saved data....
-    memcached.get('user', function (err, result) {
+    memcached.get('key', function (err, result) {
+        //console.log("Found object",result);
         if(result != null){
-            res.status(200).send( JSON.parse( result ));
+            console.log("Found object",result);
+            res.status(200).send( JSON.parse(result) );
         }
         if(err){
             res.status(500).send(err);
@@ -145,3 +166,7 @@ app.listen(3000, function(res, req){
 
     console.log("server is running at port 3000");
 })
+
+/*
+'{"userId":"iuytredcvb12345sdfgh","userName":"testUser","emailId":"demo.jsonworld@gmail.com","phone":"8287374553","availableFor":"2 hours","dateOfBirth":"06-08-1990","city":"San Jose","state":"California","occupation":"student","age":"30","height":"160cm","weight":"60kg","createdOn":"1543122402"}'
+*/

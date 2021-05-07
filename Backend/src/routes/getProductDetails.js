@@ -1,4 +1,4 @@
-// import Products from  './product.model';
+
 const Products = require('../model/product.model');
 const getProductDetails = (product_id) => {
 
