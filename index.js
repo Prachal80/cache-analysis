@@ -9,14 +9,15 @@ const app = express();
 var Memcached = require('memcached');
 
 // Created object for memcached
-var memcached = new Memcached();
-/* code to connect with your memecahced server */
+const memcached= new Memcached('memcached.iywc22.cfg.usw2.cache.amazonaws.com:11211');
+/* code to connect with your memecahced server 
 memcached.connect( 'localhost:11211', function( err, conn ){
     console.log("connected with memccached");
 if( err ) {
 console.log( conn.server,'error while memcached connection!!');
 }
 });
+*/
 
 mongoose.connect(mongoDB, (err) => {
     if (err) {
@@ -171,5 +172,5 @@ app.listen(3000, function(res, req){
 })
 
 /*
-'{"userId":"iuytredcvb12345sdfgh","userName":"testUser","emailId":"demo.jsonworld@gmail.com","phone":"8287374553","availableFor":"2 hours","dateOfBirth":"06-08-1990","city":"San Jose","state":"California","occupation":"student","age":"30","height":"160cm","weight":"60kg","createdOn":"1543122402"}'
+'{"userId":"1","userName":"testUser","emailId":"demo.jsonworld@gmail.com","phone":"8287374553","availableFor":"2 hours","dateOfBirth":"06-08-1990","city":"San Jose","state":"California","occupation":"student","age":"30","height":"160cm","weight":"60kg","createdOn":"1543122402"}'
 */
