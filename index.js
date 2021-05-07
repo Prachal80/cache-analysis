@@ -44,10 +44,12 @@ app.use(function(req, res, next) {
     next();
 });
 
+//ping route
 app.get('/', function(res, req){
-    res.send("Hello World!");
+    res.send("Ping route");
 });
 
+//get product by id
 app.get('/product/:product_id', (req, res) => {
 
     getProductDetails(req.params.product_id)
@@ -60,9 +62,10 @@ app.get('/product/:product_id', (req, res) => {
     })
 });
 
+//get all products
 app.get('/products/all', (req, res) => {
 
-    const searchTerm = "al";
+    const searchTerm = "all";
 
     try{
     client.get(searchTerm, async (err, result) => {
@@ -95,11 +98,12 @@ app.get('/products/all', (req, res) => {
     })
     }
     catch(err) {
-        //console.log("try catch block err")
+
         res.status(500).send({message: "client.get error"});
     }
 });
 
+//Add product
 app.post('/add/product', (req, res) => {
 
     var newProduct = new Products ({
